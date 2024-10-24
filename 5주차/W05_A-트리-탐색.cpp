@@ -1,67 +1,51 @@
-#include<iostream>
-#include<math.h>
+#include <iostream>
+#include <math.h>
 using namespace std;
 
 int tc, h, q;
-unsigned long long sum[32]; //�� ���� �ִ� ����, ex. sum[4] = 15
+unsigned long long sum[32];
 
-void binarySearch(unsigned long long number, unsigned long long start, unsigned long long last) {
-	unsigned long long mid;
+void binarySearch(unsigned long long number, unsigned long long start, unsigned long long last){
+    unsigned long long mid;
+    while(start != last - 1){
+        mid = (start + last)/2;
+        if(number > mid){
+            cout << 'R';
+            start = mid + 1;
+            continue;
+        }
+        cout << 'L';
+        last = mid;
+    }
 
-	// �׻� ¦������ ���ڰ� �ֱ� ������, mid���� �׻� x.5, ���� start�� end�� �ϳ� ���� ���� ���·� ���ѹݺ���.
-	while (start != last - 1) {
-		mid = (start + last) / 2;
-		if (number > mid) {
-			cout << 'R';
-			start = mid + 1;
-		}
-		else if (number <= mid) {
-			cout << 'L';
-			last = mid;
-		}
-	}
-
-	if (start == number) {
-		cout << 'L';
-		return;
-	}
-	cout << 'R';
-	return;
+    if(number == start){
+        cout << "L\n";
+        return;
+    }
+    cout << "R\n";
+    return;
 }
 
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+int main(){
+    sum[0] = 1;
+    for(int i = 1; i< 32; i++) sum[i] = pow(2, i) + sum[i-1];
 
-	// 31������ �ʱ�ȭ
-	sum[0] = 1;
-	for (int i = 1; i < 32; i++) {
-		if (sum[i] != 0) continue;
-		sum[i] = pow(2, i) + sum[i - 1];
-	}
+    cin >> tc;
+    while(tc--){
+        cin >> h >> q;
+        for(int i = 0; i< q; i++){
+            unsigned long long number, numHeight = 0;
+            cin >> number;
 
-	cin >> tc;
+            for(int j = 0; j < 32; j++){
+                if(number > sum[j]) continue;
+                numHeight = j;
+                break;
+            }
 
-	while (tc--) {
-		cin >> h >> q;
-		for (int i = 0; i < q; i++) {
-			unsigned long long number, numHeight = 0;
-			cin >> number;
-
-			// �ش� ���ڰ� �� ���� �����ִ��� ã��
-			for (int i = 0; i < 32; i++) {
-				if (number > sum[i]) continue;
-				numHeight = i;
-				break;
-			}
-			
-			// �ش� ���� ù ���ڿ� ������ ���� ���� ������ �̺�Ž��
-			binarySearch(number, pow(2, numHeight), pow(2, numHeight + 1) - 1);
-			cout << "\n";
-		}
-	}
-
+            binarySearch(number, pow(2, numHeight), pow(2, numHeight + 1) - 1);
+        }
+    }
 }
 /*
 1
