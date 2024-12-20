@@ -6,7 +6,7 @@ int tc;
 
 int main(){
     cin >> tc;
-    while(tc--){
+    while(tc--)
         int n, m;
         cin >> n >> m;
 
